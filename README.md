@@ -22,9 +22,34 @@ VerifierMAT - To verify ZK proof<br>
 ### Flow
 
 
-RequestTransferMsg
+1. RequestTransferMsg
 
-    Rec => Sender
+    Reciever => Sender
+    1. Reciever invokes an API with payload 
+    
+```JSON
+{ 
+    "transferAmount":100, 
+    "tokenName": "tokenA", 
+    "requesterAddress": "xxx", 
+    "senderAddress": "yyy"
+}
+```
+API should call 
+```js
+CCRouterMat.sendRequestMsg(address requester, bytes32 encryptedAmount/transferAmountHash, string tokenName, bytes32 proof) 
+```
+
+```js
+Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+            receiver: abi.encode(receiver),
+            data: abi.encode(messageText),
+            tokenAmounts: new Client.EVMTokenAmount[](0),
+            extraArgs: "",
+            feeToken: payFeesIn == PayFeesIn.LINK ? i_link : address(0)
+        });
+
+```
 
     Reciever send Transfer request with transferAmountHash
 
