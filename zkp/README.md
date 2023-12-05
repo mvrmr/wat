@@ -11,14 +11,18 @@ cd to wat/zkp directory for all instructions below.
 
 1. Pre-requisites
 
-	npm init	(Just leave all default values)
-	npm i snarkjs
-	npm i circomlibjs
-	npm i circomlib
-	npm i commander
+```
+npm init	(Just leave all default values)
+npm i snarkjs
+npm i circomlibjs
+npm i circomlib
+npm i commander
+ ```
 
-	Trusted Setup, either create your own ptau file or you can use this one pre-generated (not recommended for production):
-	wget https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_12.ptau -O ./data/powersOfTau28_hez_final_12.ptau
+Trusted Setup, either create your own ptau file or you can use this one pre-generated (not recommended for production):
+```
+ wget https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_12.ptau -O ./data/powersOfTau28_hez_final_12.ptau
+```
 
 3. Sender ZKP
 
@@ -66,7 +70,7 @@ snarkjs zkey export solidityverifier keys/receiver_proving_key.zkey build/solidi
 ```
 The generated solidity code can be installed on-chain
 
-###Run sender and receiver tests in NodeJS
+### Run sender and receiver tests in NodeJS
 1.  Run the Sender Prover and Verifier in NodeJS
 ```
 node src/js/sender_test.js --sendamount=100 --senderstartingbalance=1000
