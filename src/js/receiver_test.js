@@ -38,18 +38,18 @@ const commander = require("commander");
   // This step is not required.  It's only used to manually verify the hashes that are produced int he circuit
   const poseidon = await circomlibjs.buildPoseidon();
   const receiverStartingBalanceHash = poseidon.F.toString(
-    poseidon([receiverStartingBalance])
+    poseidon([receiverStartingBalance + receiverSalt])
   );
   console.log(
     `receiverStartingBalance='${receiverStartingBalance}'; receiverStartingBalanceHash='${receiverStartingBalanceHash}'`
   );
   const receiverEndingBalanceHash = poseidon.F.toString(
-    poseidon([receiverEndingBalance])
+    poseidon([receiverEndingBalance + receiverSalt])
   );
   console.log(
     `receiverEndingBalance='${receiverEndingBalance}'; receiverEndingBalanceHash='${receiverEndingBalanceHash}'`
   );
-  const sendAmountHash = poseidon.F.toString(poseidon([sendAmount]));
+  const sendAmountHash = poseidon.F.toString(poseidon([sendAmount + receiverSalt]));
   console.log(`sendAmount='${sendAmount}'; sendAmountHash='${sendAmountHash}'`);
 
   // Run the circuit, generating the proof
