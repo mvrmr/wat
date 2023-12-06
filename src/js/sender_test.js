@@ -16,14 +16,19 @@ const commander = require("commander");
       "0"
     )
     .option(
-      "-s, --senderstartingbalance <Staring Balance of Sender Account>",
+      "-b, --senderstartingbalance <Staring Balance of Sender Account>",
       "Overwriting value.",
       "0"
     )
+    .option(
+     '-s, --sendersalt <Random Salt owned by Sender>', 
+     'Overwriting value.', 
+     '0')
     .parse(process.argv);
   const options = commander.opts();
 
   // Define private witness input variables and intermediary signals
+  const senderSalt = Number(`${options.sendersalt}`);
   const sendAmount = Number(`${options.sendamount}`);
   const senderStartingBalance = Number(`${options.senderstartingbalance}`);
   const senderEndingBalance = senderStartingBalance - sendAmount;
@@ -49,6 +54,7 @@ const commander = require("commander");
   // Run the circuit to generate the proof
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
     {
+      senderSalt: senderSalt,
       senderStartingBalance: senderStartingBalance,
       sendAmount: sendAmount,
     },

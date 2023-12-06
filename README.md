@@ -94,7 +94,7 @@ The generated solidity code can be installed on-chain
 1. Run the Sender Prover and Verifier in NodeJS
 
 ```sh
-node src/js/sender_test.js --sendamount=100 --senderstartingbalance=1000
+node src/js/sender_test.js --sendamount=100 --senderstartingbalance=1000 --sendersalt=1234567890
 ```
 
 To pass the jsonCallData output to Solidity verification contract (on-chain):
@@ -105,7 +105,7 @@ c.Remove all all carriage returns/line feeds
 2.Run the Receiver Prover and Verifier in NodeJS
 
 ```sh
-node src/js/receiver_test.js --sendamount=100 --receiverstartingbalance=1000
+node src/js/receiver_test.js --sendamount=100 --receiverstartingbalance=1000 --receiversalt=987654321
 ```
 
 To pass the jsonCallData output to Solidity verification contract (on-chain):

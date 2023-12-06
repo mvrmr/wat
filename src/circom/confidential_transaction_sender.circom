@@ -4,11 +4,12 @@ include "../../node_modules/circomlib/circuits/poseidon.circom";
 
 template ConfidentialTransactionSender() {
     /*
-	w.senderStartingBalance >= w.sendAmount && 				  // Does sender own enough tokens to send?
-	hash(w.sendAmount) == x.sendAmountHash &&				  // Is the sender correctly stating the number of tokens being transfered?
-	hash(w.senderStartingBalance) == x.senderStartingBalanceHash &&		  // Is the sender correctly stating their starting balance?
-	hash(w.senderStartingBalance - w.sendAmount) == x.senderEndingBalanceHash // Is the sender correctly stating their ending balance?
+	w.senderStartingBalance >= w.senderAmount && 					  	// Does sender own enough tokens to send?
+	hash(w.sendAmount + senderSalt) == x.sendAmountHash &&				  	// Is the sender correctly stating the number of tokens being tfer'd?
+	hash(w.senderStartingBalance + senderSalt) == x.senderStartingBalanceHash &&	  	// Is the sender correctly stating their starting balance?
+	hash(w.senderStartingBalance - w.sendAmount + senderSalt) == x.senderEndingBalanceHash  // Is the sender correctly stating their ending balance?
     */
+    signal input senderSalt;
     signal input senderStartingBalance;
     signal input sendAmount;
 
@@ -21,15 +22,15 @@ template ConfidentialTransactionSender() {
     assert(senderStartingBalance >= sendAmount);
 
     component poseidon1 = Poseidon(1);
-    poseidon1.inputs[0] <== sendAmount;
+    poseidon1.inputs[0] <== sendAmount + senderSalt;
     sendAmountHash <== poseidon1.out;
 
     component poseidon2 = Poseidon(1);
-    poseidon2.inputs[0] <== senderStartingBalance;
+    poseidon2.inputs[0] <== senderStartingBalance + senderSalt;
     senderStartingBalanceHash <== poseidon2.out;
 
     component poseidon3 = Poseidon(1);
-    poseidon3.inputs[0] <== senderEndingBalance;
+    poseidon3.inputs[0] <== senderEndingBalance + senderSalt;
     senderEndingBalanceHash <== poseidon3.out;
 }
 
