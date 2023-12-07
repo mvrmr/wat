@@ -19,7 +19,7 @@ async function bootstrap() {
     console.log(
       'Server listening on Port',
       PORT,
-      'SwaggerUI URL: http://localhost:3000/api',
+      `SwaggerUI URL: http://localhost:${PORT}/api`,
     );
   } catch (error) {
     console.log('Error in Server setup', error);
