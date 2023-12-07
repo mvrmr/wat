@@ -17,7 +17,3 @@ export class AppController {
     return this.appService.healthCheck();
   }
 }
-function Tags(): (target: typeof AppController) => void | typeof AppController {
-  throw new Error('Function not implemented.');
-}
-
