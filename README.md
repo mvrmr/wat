@@ -97,6 +97,38 @@ snarkjs zkey export solidityverifier keys/receiver_proving_key.zkey build/solidi
 
 The generated solidity code can be installed on-chain
 
+4.New Account ZKP (for prove zero balance)
+
+A ZKP is required for new account creation with a zero balance to prove that the resulting hash value is calculated from a zero balance plus the account salt value.
+
+
+In the first step, we compile the circuit by the circom compiler that will generate a wasm and an r1cs file.
+
+```sh
+circom src/circom/confidential_transaction_new_account.circom --wasm --r1cs -o ./build/circom
+```
+
+Now we can generate the proving key (zkey file) by using the circuit and the ptau file:
+
+```sh
+snarkjs groth16 setup build/circom/confidential_transaction_new_account.r1cs data/powersOfTau28_hez_final_12.ptau keys/new_account_proving_key.zkey
+```
+
+Now generate the verification key from the proving key 
+
+```sh
+snarkjs zkey export verificationkey keys/new_account_proving_key.zkey keys/new_account_verification_key.json
+```
+
+Now generate a verifier for smart contracts (Solidity)
+
+```sh
+snarkjs zkey export solidityverifier keys/new_account_proving_key.zkey build/solidity/new_account_verifier.sol
+```
+
+The generated solidity code can be installed on-chain
+
+
 ### Run sender and receiver tests in NodeJS
 
 1. Run the Sender Prover and Verifier in NodeJS
