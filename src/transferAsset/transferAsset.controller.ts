@@ -9,7 +9,6 @@ export class TransferAssetController {
 
   @Get('receiverTest/:sendAmount/:receiverstartingbalance/:receiversalt')
   receiverTest(
-    @Param() params: any,
     @Param('sendAmount') sendAmount: number,
     @Param('receiverstartingbalance') receiverstartingbalance: number,
     @Param('receiversalt') receiversalt: number,

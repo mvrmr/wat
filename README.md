@@ -23,6 +23,7 @@ npm install -g snarkjs
 
 <!-- npm i snarkjs circomlibjs circomlib commander -->
 
+
 ```sh
 npm install
  ```
