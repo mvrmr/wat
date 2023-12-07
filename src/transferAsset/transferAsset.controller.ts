@@ -9,10 +9,21 @@ export class TransferAssetController {
 
   @Get('receiverTest/:sendAmount/:receiverstartingbalance/:receiversalt')
   receiverTest(
-    @Param('sendAmount') sendAmount: number,
-    @Param('receiverstartingbalance') receiverstartingbalance: number,
-    @Param('receiversalt') receiversalt: number,
+    @Param('sendAmount') sendAmount,
+    @Param('receiverstartingbalance') receiverstartingbalance,
+    @Param('receiversalt') receiversalt,
   ): string {
+    sendAmount =
+      typeof sendAmount == 'string' ? parseInt(sendAmount) : sendAmount;
+
+    receiverstartingbalance =
+      typeof receiverstartingbalance == 'string'
+        ? parseInt(receiverstartingbalance)
+        : receiverstartingbalance;
+
+    receiversalt =
+      typeof receiversalt == 'string' ? parseInt(receiversalt) : receiversalt;
+
     return this.transferAssetService.receiverTest(
       sendAmount,
       receiverstartingbalance,
