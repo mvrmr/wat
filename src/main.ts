@@ -8,11 +8,21 @@ async function bootstrap() {
     .setTitle('Whisper Asset Manager')
     .setDescription('Whisper Asset Manager for Constellation')
     .setVersion('1.0')
-    .addTag('wat-zkp')
+    // .addTag('wat-zkp')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  const PORT = process.env.PORT || 3000;
 
-  await app.listen(3000);
+  try {
+    await app.listen(PORT);
+    console.log(
+      'Server listening on Port',
+      PORT,
+      'SwaggerUI URL: http://localhost:3000/api',
+    );
+  } catch (error) {
+    console.log('Error in Server setup', error);
+  }
 }
 bootstrap();

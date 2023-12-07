@@ -6,7 +6,7 @@ import { TransferAssetService } from './transferAsset/transferAsset.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, TransferAssetController],
+  controllers: [TransferAssetController, AppController],
   providers: [AppService, TransferAssetService],
 })
 export class AppModule {}

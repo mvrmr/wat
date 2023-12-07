@@ -17,16 +17,22 @@ npm install -g snarkjs
 
 2.Node JS
 
-### Build Instructions
+### Build & Run API Server
 
-1.Pre-requisites
-
-<!-- npm i snarkjs circomlibjs circomlib commander -->
-
+Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change based on environment varilable PORT
 
 ```sh
 npm install
+npm start   
+
+`OR`
+
+npm run start:dev (if you want run in Dev node, where server restaer on code change automagically)  
  ```
+
+### Build Instructions
+
+1.Pre-requisites
 
 Trusted Setup, either create your own ptau file or you can use this one pre-generated (not recommended for production):
 
