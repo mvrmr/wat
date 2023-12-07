@@ -2,7 +2,20 @@
 
 ## Confidential Transactions using Zero-Knowledge Proofs (ZKP)
 
-### Pre-requisites
+### Build & Run API Server
+
+Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change based on environment variable PORT
+
+```sh
+npm install
+npm start   
+
+`OR`
+
+npm run start:dev (if you want run in Dev node, where server restaer on code change auto-magically)  
+ ```
+
+### Pre-requisites (to run from command line)
 
 1.Circom (which also depends on Rust) <https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/installation.md>
 
@@ -17,18 +30,6 @@ npm install -g snarkjs
 
 2.Node JS
 
-### Build & Run API Server
-
-Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change based on environment varilable PORT
-
-```sh
-npm install
-npm start   
-
-`OR`
-
-npm run start:dev (if you want run in Dev node, where server restaer on code change automagically)  
- ```
 
 ### Build Instructions
 
