@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { TransferAssetService } from './transferAsset.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -7,30 +7,51 @@ import { ApiTags } from '@nestjs/swagger';
 export class TransferAssetController {
   constructor(private readonly transferAssetService: TransferAssetService) {}
 
-  @Get('receiverTest/:sendAmount/:receiverstartingbalance/:receiversalt')
+  @Get('receiverTest/:sendAmount/:receiverStartingBalance/:receiverSalt')
   receiverTest(
     @Param('sendAmount') sendAmount: number,
-    @Param('receiverstartingbalance') receiverstartingbalance: number,
-    @Param('receiversalt') receiversalt: number,
-  ): string {
+    @Param('receiverStartingBalance') receiverStartingBalance: number,
+    @Param('receiverSalt') receiverSalt: number,
+  ): any {
     sendAmount =
       typeof sendAmount == 'string' ? parseInt(sendAmount) : sendAmount;
 
-    receiverstartingbalance =
-      typeof receiverstartingbalance == 'string'
-        ? parseInt(receiverstartingbalance)
-        : receiverstartingbalance;
+    receiverStartingBalance =
+      typeof receiverStartingBalance == 'string'
+        ? parseInt(receiverStartingBalance)
+        : receiverStartingBalance;
 
-    receiversalt =
-      typeof receiversalt == 'string' ? parseInt(receiversalt) : receiversalt;
+    receiverSalt =
+      typeof receiverSalt == 'string' ? parseInt(receiverSalt) : receiverSalt;
 
     return this.transferAssetService.receiverTest(
       sendAmount,
-      receiverstartingbalance,
-      receiversalt,
+      receiverStartingBalance,
+      receiverSalt,
     );
+  }
 
-    // return `About to execute receiverTest with Params, sendAmount: ${sendAmount}, receiverstartingbalance: ${receiverstartingbalance}`;
-    // return this.appService.getHello();
+  @Get('senderTest')
+  senderTest(
+    @Query('sendAmount') sendAmount: number,
+    @Query('senderStartingBalance') senderStartingBalance: number,
+    @Query('senderSalt') senderSalt: number,
+  ): any {
+    sendAmount =
+      typeof sendAmount == 'string' ? parseInt(sendAmount) : sendAmount;
+
+    senderStartingBalance =
+      typeof senderStartingBalance == 'string'
+        ? parseInt(senderStartingBalance)
+        : senderStartingBalance;
+
+    senderSalt =
+      typeof senderSalt == 'string' ? parseInt(senderSalt) : senderSalt;
+
+    return this.transferAssetService.senderTest(
+      sendAmount,
+      senderStartingBalance,
+      senderSalt,
+    );
   }
 }

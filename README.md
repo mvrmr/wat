@@ -20,7 +20,7 @@ npm run start:dev (if you want run in Dev node, where server restaer on code cha
 1.Circom (which also depends on Rust) <https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/installation.md>
 
 Installing dependencies
-curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+curl --proto '=https' --tlsv1.2 <https://sh.rustup.rs> -sSf | sh
 
 Installing circom follow steps
 
@@ -29,7 +29,6 @@ Installing snarkjs: snarkjs is a npm package that contains code to generate and 
 npm install -g snarkjs
 
 2.Node JS
-
 
 ### Build Instructions
 
@@ -55,7 +54,7 @@ Now we can generate the proving key (zkey file) by using the circuit and the pta
 snarkjs groth16 setup build/circom/confidential_transaction_sender.r1cs data/powersOfTau28_hez_final_12.ptau keys/sender_proving_key.zkey
 ```
 
-Now generate the verification key from the proving key 
+Now generate the verification key from the proving key
 
 ```sh
 snarkjs zkey export verificationkey keys/sender_proving_key.zkey keys/sender_verification_key.json
@@ -83,7 +82,7 @@ Now we can generate the proving key (zkey file) by using the circuit and the pta
 snarkjs groth16 setup build/circom/confidential_transaction_receiver.r1cs data/powersOfTau28_hez_final_12.ptau keys/receiver_proving_key.zkey
 ```
 
-Now generate the verification key from the proving key 
+Now generate the verification key from the proving key
 
 ```sh
 snarkjs zkey export verificationkey keys/receiver_proving_key.zkey keys/receiver_verification_key.json
@@ -101,7 +100,6 @@ The generated solidity code can be installed on-chain
 
 A ZKP is required for new account creation with a zero balance to prove that the resulting hash value is calculated from a zero balance plus the account salt value.
 
-
 In the first step, we compile the circuit by the circom compiler that will generate a wasm and an r1cs file.
 
 ```sh
@@ -114,7 +112,7 @@ Now we can generate the proving key (zkey file) by using the circuit and the pta
 snarkjs groth16 setup build/circom/confidential_transaction_new_account.r1cs data/powersOfTau28_hez_final_12.ptau keys/new_account_proving_key.zkey
 ```
 
-Now generate the verification key from the proving key 
+Now generate the verification key from the proving key
 
 ```sh
 snarkjs zkey export verificationkey keys/new_account_proving_key.zkey keys/new_account_verification_key.json
@@ -127,7 +125,6 @@ snarkjs zkey export solidityverifier keys/new_account_proving_key.zkey build/sol
 ```
 
 The generated solidity code can be installed on-chain
-
 
 ### Run sender and receiver tests in NodeJS
 
@@ -169,16 +166,15 @@ EscrowMAT - to lock & burn Token<br>
 CCIPMsgContractMAT - To send Msg across the CCIP network<br>
 VerifierMAT - To verify ZK proof<br>
 
-
 ![Alt text](basic.jpg)
-### Flow
 
+### Flow
 
 1.RequestTransferMsg
 
     Reciever => Sender
     1.Reciever invokes an API with payload 
-    
+
 ```JSON
 { 
     "transferAmount":100, 
@@ -187,7 +183,9 @@ VerifierMAT - To verify ZK proof<br>
     "senderAddress": "yyy"
 }
 ```
-API should call 
+
+API should call
+
 ```js
 CCRouterMat.sendRequestMsg(address requester, bytes32 encryptedAmount/transferAmountHash, string tokenName, bytes32 proof) 
 ```
@@ -215,11 +213,10 @@ MintAssetMsg
 
     Rec => Sender
 
-BurnAssetMsg 
+BurnAssetMsg
 
     Sender => Rec
 
 RequestComplete
 
     Rec => Sender
-
