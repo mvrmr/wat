@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -6,16 +6,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  basePath(): string {
+    return this.appService.healthCheck();
   }
 
-  @Get('receiverTest/:sendAmount/:receiverstartingbalance')
-  receiverTest(
-    @Param('sendAmount') sendAmount: number,
-    @Param('receiverstartingbalance') receiverstartingbalance: number,
-  ): string {
-    return `About to execute receiverTest with Params, sendAmount: ${sendAmount}, receiverstartingbalance: ${receiverstartingbalance}`;
-    // return this.appService.getHello();
+  @Get('healthCheck')
+  healthCheck() {
+    return this.appService.healthCheck();
   }
 }
