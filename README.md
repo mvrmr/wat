@@ -8,12 +8,12 @@ Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change ba
 
 ```sh
 npm install
-npm start   
+npm start
 
 `OR`
 
-npm run start:dev (if you want run in Dev node, where server restaer on code change auto-magically)  
- ```
+npm run start:dev (if you want run in Dev node, where server restaer on code change auto-magically)
+```
 
 ### Pre-requisites (to run from command line)
 
@@ -150,6 +150,12 @@ a.Remove trailing "n" from all numbers
 b.first and last "[" "]"
 c.Remove all all carriage returns/line feeds
 
+3. Run the New Account Prover and verifier in NodeJs
+
+```sh
+node src/js/newAccount_test.js --receiversalt=987654321
+```
+
 ## Transfer Asset from ETH <> MATIC
 
 Smart Contracts needed
@@ -173,13 +179,13 @@ VerifierMAT - To verify ZK proof<br>
 1.RequestTransferMsg
 
     Reciever => Sender
-    1.Reciever invokes an API with payload 
+    1.Reciever invokes an API with payload
 
 ```JSON
-{ 
-    "transferAmount":100, 
-    "tokenName": "tokenA", 
-    "requesterAddress": "xxx", 
+{
+    "transferAmount":100,
+    "tokenName": "tokenA",
+    "requesterAddress": "xxx",
     "senderAddress": "yyy"
 }
 ```
@@ -187,7 +193,7 @@ VerifierMAT - To verify ZK proof<br>
 API should call
 
 ```js
-CCRouterMat.sendRequestMsg(address requester, bytes32 encryptedAmount/transferAmountHash, string tokenName, bytes32 proof) 
+CCRouterMat.sendRequestMsg(address requester, bytes32 encryptedAmount/transferAmountHash, string tokenName, bytes32 proof)
 ```
 
 ```js
