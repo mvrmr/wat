@@ -4,9 +4,9 @@ include "../../node_modules/circomlib/circuits/poseidon.circom";
 
 template ConfidentialTransactionReceiver() {
     /*
-	hash(w.sendAmount + receiverSalt) == x.sendAmountHash &&					// Is the receiver correctly stating the number of tokens being transfered?
-	hash(w.receiverStartingBalance + receiverSalt) == x.receiverStartingBalanceHash &&		// Is the receiver correctly stating their starting balance?
-	hash(w.receiverStartingBalance + w.sendAmount + receiverSalt) == x.receiverrEndingBalanceHash	// Is the receiver correctly stating their ending balance?
+	hash(w.sendAmount + w.receiverSalt) == x.sendAmountHash &&					// Is the receiver correctly stating the number of tokens being transfered?
+	hash(w.receiverStartingBalance + w.receiverSalt) == x.receiverStartingBalanceHash &&		// Is the receiver correctly stating their starting balance?
+	hash(w.receiverStartingBalance + w.sendAmount + w.receiverSalt) == x.receiverrEndingBalanceHash	// Is the receiver correctly stating their ending balance?
     */
     signal input receiverSalt;
     signal input receiverStartingBalance;
