@@ -5,7 +5,7 @@ include "../../node_modules/circomlib/circuits/poseidon.circom";
 template ConfidentialTransactionNewAccount() {
     /*
 	w.startingBalance == 0 && 					  			// Are we initializing the account with zero value?
-	hash(accountSalt) == x.zeroBalanceHash &&				  		// Is the Initial Balance has representing a zero value?
+	hash(w.accountSalt) == x.zeroBalanceHash &&				  		// Is the Initial Balance has representing a zero value?
     */
     signal input accountSalt;
 
