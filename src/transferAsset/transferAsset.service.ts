@@ -3,6 +3,8 @@ import { utils } from 'ffjavascript';
 import snarkjs = require('snarkjs');
 import { readFileSync } from 'node:fs';
 import circomlibjs = require('circomlibjs');
+import { ethersProvider } from 'src/utils';
+import { ethers } from 'ethers';
 
 @Injectable()
 export class TransferAssetService {
@@ -174,5 +176,29 @@ export class TransferAssetService {
     } else {
       console.log('Invalid proof');
     }
+  };
+
+  getBalance = async function (ethAddress: string): Promise<any> {
+    const ethBalance = await ethersProvider.getBalance(ethAddress);
+    return ethers.utils.formatEther(ethBalance);
+  };
+
+  transferEther = async function (
+    toEthAddress: string,
+    fromEthAddressPrvKey = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+  ): Promise<any> {
+    const senderWallet = new ethers.Wallet(
+      fromEthAddressPrvKey,
+      ethersProvider,
+    );
+    const sendEtherTransaction = await senderWallet.sendTransaction({
+      to: toEthAddress,
+      gasLimit: 30000000,
+      value: ethers.utils.parseEther('10'),
+    });
+    console.log({ sendEtherTransaction });
+    const ethBalance = await ethersProvider.getBalance(toEthAddress);
+    return ethers.utils.formatEther(ethBalance);
+    // return ethBalance.toNumber();
   };
 }
