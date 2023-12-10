@@ -12,11 +12,15 @@ import {ReceiverVerifier} from '../src/verifiers/ReceiverVerifier.sol';
 import {IWATMsgSender} from '../src/IWATMsgSender.sol';
 
 contract InitiateRequest is Script, Helper {
-    function run(address assetMatic, address owner, address receiver) external {
+    function run(
+        address assetMatic,
+        address owner,
+        address receiver,
+        uint transferAmount
+    ) external {
         uint256 deployerPrivateKey = vm.envUint('PRIVATE_KEY');
         vm.startBroadcast(deployerPrivateKey);
 
-        uint transferAmount = 9063223437320598139079695905155378525850140857890492073786276750582370389075;
         uint[2] memory _pA = [
             uint(
                 20477609174941154187356854671849235946378517577975955451934108673721901739285
