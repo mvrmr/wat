@@ -261,7 +261,7 @@ forge script ./script/Transfer.s.sol:InitiateRequest -vvv --broadcast --rpc-url 
 2. Burn Asset in Source chain
 
 ```sh
-forge script ./script/Transfer.s.sol:BurnAsset -vvv --broadcast --rpc-url binanceTest --sig “run(uint256)” -- <transferId>
+forge script ./script/Transfer.s.sol:BurnAsset -vvv --broadcast --rpc-url binanceTest --sig “run(address,uint256)” -- <AssetTransfer(BNB)><transferId>
 ```
 
 ![Alt text](diagrams/burn.png)
@@ -269,7 +269,7 @@ forge script ./script/Transfer.s.sol:BurnAsset -vvv --broadcast --rpc-url binanc
 3. Mint Asset in Receiver Chain
 
 ```sh
-forge script ./script/Transfer.s.sol:MintAsset -vvv --broadcast --rpc-url polygonMumbai --sig “run(uint256)” -- <transferId>
+forge script ./script/Transfer.s.sol:MintAsset -vvv --broadcast --rpc-url polygonMumbai --sig “run(address,uint256)” -- <AssetTransfer(Polygon)> <transferId>
 ```
 
 ![Alt text](diagrams/mint.png)

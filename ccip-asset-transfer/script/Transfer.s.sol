@@ -76,8 +76,75 @@ contract InitiateRequest is Script, Helper {
     }
 }
 
-contract LockAsset is Script, Helper {}
+contract lockAsset is Script, Helper {
+    function run(address assetTransfer, uint256 transferId) external {
+        uint256 deployerPrivateKey = vm.envUint('PRIVATE_KEY');
+        vm.startBroadcast(deployerPrivateKey);
+        uint[2] memory _pA = [
+            uint(
+                20477609174941154187356854671849235946378517577975955451934108673721901739285
+            ),
+            uint(
+                6784509057939839054913595226476555619186750185541866049254406100074644167709
+            )
+        ];
 
-contract MintAsset is Script, Helper {}
+        uint[2][2] memory _pB = [
+            [
+                uint(
+                    20383133222437155449718759618515169711692260057214661039814095848008902815235
+                ),
+                uint(
+                    6089865246105190676736684976410379135735964536661019790179433344690788774848
+                )
+            ],
+            [
+                uint(
+                    1257425549973516426450204688100913198959754913149523294026238743046052954906
+                ),
+                uint(
+                    12388298944050795792724533461192229726788578786260493289549440914212372672407
+                )
+            ]
+        ];
 
-contract BurnAsset is Script, Helper {}
+        uint[2] memory _pC = [
+            uint(
+                13686779981378451443698536652415982512327768039197691882923464915324136921521
+            ),
+            uint(
+                15362278040140921024726399565638960853807811417047636744886597418309574637748
+            )
+        ];
+
+        AssetTransferV3(assetTransfer).lockAsset(
+            transferId,
+            uint(11),
+            uint(22),
+            _pA,
+            _pB,
+            _pC
+        );
+        vm.stopBroadcast();
+    }
+}
+
+contract MintAsset is Script, Helper {
+    function run(address assetTransfer, uint256 transferId) external {
+        uint256 deployerPrivateKey = vm.envUint('PRIVATE_KEY');
+        vm.startBroadcast(deployerPrivateKey);
+
+        AssetTransferV3(assetTransfer).mintAsset(transferId);
+        vm.stopBroadcast();
+    }
+}
+
+contract BurnAsset is Script, Helper {
+    function run(address assetTransfer, uint256 transferId) external {
+        uint256 deployerPrivateKey = vm.envUint('PRIVATE_KEY');
+        vm.startBroadcast(deployerPrivateKey);
+
+        AssetTransferV3(assetTransfer).burnAsset(transferId);
+        vm.stopBroadcast();
+    }
+}
