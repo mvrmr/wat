@@ -1,32 +1,85 @@
-# wat (Whisper Asset Manager for Constellation)
+# Whisper Asset Manager
+
+## Introduction
+
+Whisper asset transfer represents a sophisticated method of transferring digital assets across different blockchain networks. This process leverages the Cross-Chain Interoperability Protocol (CCIP) and zero-knowledge (zk) proofs to ensure security, privacy, and efficiency.
+
+## Key Components
+
+- **CCIP (Cross-Chain Interoperability Protocol)**: Facilitates communication and asset transfer between disparate blockchain networks.
+- **Zero-Knowledge Proofs**: Allows for the verification of transactions without revealing any sensitive information about the assets or the parties involved.
+
+## Architecture
+
+![Alt text](diagrams/Architecture.png)
+
+## Asset Transfer Process
+
+1. **Initiation on Source Chain**:
+
+   - The asset is locked or earmarked in the source blockchain using a smart contract.
+   - A cryptographic proof or signal is generated to signify the locking event.
+
+2. **Cross-Chain Communication via CCIP**:
+
+   - The CCIP is used to relay the asset transfer request and the cryptographic proof from the source chain to the destination chain.
+
+3. **Verification on Destination Chain**:
+
+   - The destination chain receives the transfer request and cryptographic proof.
+   - Zero-knowledge proofs are utilized to validate the authenticity of the transfer without compromising privacy.
+
+4. **Completion of Transfer**:
+   - After successful verification, the asset is released or replicated on the destination chain.
+   - The recipient can now access the asset on the destination blockchain.
+
+## Security and Privacy
+
+- **Zero-Knowledge Proofs**: Ensure that transaction details remain private while confirming their validity.
+- **CCIP**: Provides a secure and reliable method for cross-chain communication, safeguarding the integrity of the asset transfer.
+
+## Advantages
+
+- **Interoperability**: Enables asset movement across diverse blockchain ecosystems.
+- **Enhanced Security**: Strengthens the protection of cross-chain transactions.
+- **Privacy Preservation**: Maintains confidentiality of transaction specifics.
+- **Efficiency**: Improves time and cost efficiency in cross-chain transfers.
+
+## Potential Use Cases
+
+- **Decentralized Finance (DeFi)**: Transferring assets across various DeFi platforms on different blockchains.
+- **Non-Fungible Tokens (NFTs)**: Cross-chain transfer of NFTs for broader market accessibility.
+- **Cross-Chain Exchanges**: Enabling trades between different cryptocurrencies across blockchain networks.
+
+## Challenges and Considerations
+
+- **Technical Complexity**: Implementation demands advanced technical expertise.
+- **Network Compatibility**: Ensuring seamless interoperability among different blockchains.
+- **Regulatory Compliance**: Navigating the complex regulatory environment surrounding cross-chain transactions.
+
+## Conclusion
+
+Whisper asset transfer using CCIP and zk proofs marks a significant advancement in the realm of blockchain technology, offering a secure, private, and efficient method for cross-chain asset transfers.
 
 ## Confidential Transactions using Zero-Knowledge Proofs (ZKP)
-
-### Build & Run API Server
-
-Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change based on environment variable PORT
-
-```sh
-npm install
-npm start
-
-`OR`
-
-npm run start:dev (if you want run in Dev node, where server restaer on code change auto-magically)
-```
 
 ### Pre-requisites (to run from command line)
 
 1.Circom (which also depends on Rust) <https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/installation.md>
 
 Installing dependencies
+
+```sh
 curl --proto '=https' --tlsv1.2 <https://sh.rustup.rs> -sSf | sh
+```
 
 Installing circom follow steps
 
 Installing snarkjs: snarkjs is a npm package that contains code to generate and validate ZK proofs from the artifacts produced by circom.
 
+```sh
 npm install -g snarkjs
+```
 
 2.Node JS
 
@@ -156,73 +209,85 @@ c.Remove all all carriage returns/line feeds
 node src/js/newAccount_test.js --receiversalt=987654321
 ```
 
-## Transfer Asset from ETH <> MATIC
+### Setup smart contracts using Foundry
 
-Smart Contracts needed
+Complete the following env and save in ./ccip-asset-transfer/.env
 
-1.Ethereum (Sepolia)<br>
-TokenETH - ERC20/ERC1155/ERC721<br>
-EscrowETH - to lock & burn Token<br>
-CCIPMsgContractETH - To send Msg across the CCIP network<br>
-VerifierETH - To Verify ZK proof<br>
-
-2.Polygon (Mumbai)<br>
-TokenMAT - ERC20/ERC1155/ERC721<br>
-EscrowMAT - to lock & burn Token<br>
-CCIPMsgContractMAT - To send Msg across the CCIP network<br>
-VerifierMAT - To verify ZK proof<br>
-
-![Alt text](basic.jpg)
-
-### Flow
-
-1.RequestTransferMsg
-
-    Reciever => Sender
-    1.Reciever invokes an API with payload
-
-```JSON
-{
-    "transferAmount":100,
-    "tokenName": "tokenA",
-    "requesterAddress": "xxx",
-    "senderAddress": "yyy"
-}
+```sh
+PRIVATE_KEY=""
+POLYGON_MUMBAI_RPC_URL=""
+BINANCE_TEST_RPC_URL=""
 ```
 
-API should call
+1. Deploy Polygon Mumbai Contract
 
-```js
-CCRouterMat.sendRequestMsg(address requester, bytes32 encryptedAmount/transferAmountHash, string tokenName, bytes32 proof)
+```sh
+forge script ./script/Deploy.s.sol:DeployMaticContracts -vvv --broadcast --rpc-url polygonMumbai --sig "run(uint8, uint8)" -- 4 5
 ```
 
-```js
-Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
-            receiver: abi.encode(receiver),
-            data: abi.encode(messageText),
-            tokenAmounts: new Client.EVMTokenAmount[](0),
-            extraArgs: "",
-            feeToken: payFeesIn == PayFeesIn.LINK ? i_link : address(0)
-        });
+2. Deploy BNB Contracts
 
+```sh
+forge script ./script/Deploy.s.sol:DeployBNBContracts -vvv --broadcast --rpc-url polygonMumbai --sig "run(uint8, uint8)" -- 5 4
 ```
 
-    Reciever send Transfer request with transferAmountHash
+3. Add WATMsgReceiver (BNB TEST) address to WATMsgSender contract in polygon Mumbai
 
-LockAssetMsg
+```sh
+forge script ./script/Deploy.s.sol:AddRecAddress -vvv --broadcast --rpc-url polygonMumbai --sig "run(address,address)" -- <AssetTransferAddress(Polygon)> <WATMsgReceiver(BNB)>
+```
 
-    Sender => Rec
-    Sender Takes TransferAmount and generates proof of balance and balanceAfter Transfer
-    Sender Locks the asset in escrow Contract
+4. Add WATMsgReceiver (Polygon Mumbai) address to WATMsgSender contract in BNB Test.
 
-MintAssetMsg
+```sh
+forge script ./script/Deploy.s.sol:AddRecAddress -vvv --broadcast --rpc-url binanceTest --sig "run(address,address)" -- <AssetTransferAddress(BNB)> <WATMsgReceiver(Polygon)>
+```
 
-    Rec => Sender
+5. Fund sender and rec with LINK
+   (USE METAMASK)
 
-BurnAssetMsg
+### Transfer flow
 
-    Sender => Rec
+>
 
-RequestComplete
+1. Initiate Transfer in Receiver chain
 
-    Rec => Sender
+```sh
+forge script ./script/Transfer.s.sol:InitiateRequest -vvv --broadcast --rpc-url polygonMumbai --sig “run(address,address,address)” -- <AssetTransfer(Polygon)> <OWNER_ADDRESS(BNB)> <RECEIVER_ADDRESS(Polygon)> <TRANSFER_AMOUNT_HASH>
+```
+
+![Alt text](diagrams/initiate.png)
+
+2. Burn Asset in Source chain
+
+```sh
+forge script ./script/Transfer.s.sol:BurnAsset -vvv --broadcast --rpc-url binanceTest --sig “run(address,uint256)” -- <AssetTransfer(BNB)><transferId>
+```
+
+![Alt text](diagrams/burn.png)
+
+3. Mint Asset in Receiver Chain
+
+```sh
+forge script ./script/Transfer.s.sol:MintAsset -vvv --broadcast --rpc-url polygonMumbai --sig “run(address,uint256)” -- <AssetTransfer(Polygon)> <transferId>
+```
+
+![Alt text](diagrams/mint.png)
+
+### Sample Transactions in CCIP
+
+1. https://ccip.chain.link/msg/0xee2c1280cac1c7127e86446144ec195ca13a4602460e6558cf0fdfaff3bfb8ee
+2. https://ccip.chain.link/msg/0x0ea568e416f9752273de88b8359b35b326ab4ba278a3b74fe89cb848b9b7cd87
+
+### Build & Run API Server
+
+Swagger UI URL: <http://localhost:3000/api> default port 3000 may need change based on environment variable PORT
+
+```sh
+npm install
+npm start
+
+`OR`
+
+npm run start:dev (if you want run in Dev node, where server restaer on code change auto-magically)
+```
