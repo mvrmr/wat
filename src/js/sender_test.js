@@ -25,11 +25,17 @@ const commander = require('commander');
       'Overwriting value.',
       '0',
     )
+    .option(
+      '-e, --ephemeralsalt <Random one-time salt shared between the sender and receiver>',
+      'Overwriting value.',
+      '0',
+    )
     .parse(process.argv);
   const options = commander.opts();
 
   // Define private witness input variables and intermediary signals
   const senderSalt = Number(`${options.sendersalt}`);
+  const ephemeralSalt = Number(`${options.ephemeralsalt}`);
   const sendAmount = Number(`${options.sendamount}`);
   const senderStartingBalance = Number(`${options.senderstartingbalance}`);
   const senderEndingBalance = senderStartingBalance - sendAmount;
@@ -50,7 +56,7 @@ const commander = require('commander');
     `senderEndingBalance='${senderEndingBalance}'; senderEndingBalanceHash='${senderEndingBalanceHash}'`,
   );
   const sendAmountHash = poseidon.F.toString(
-    poseidon([sendAmount + senderSalt]),
+    poseidon([sendAmount + ephemeralSalt]),
   );
   console.log(`sendAmount='${sendAmount}'; sendAmountHash='${sendAmountHash}'`);
 
@@ -58,6 +64,7 @@ const commander = require('commander');
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
     {
       senderSalt: senderSalt,
+      ephemeralSalt: ephemeralSalt,
       senderStartingBalance: senderStartingBalance,
       sendAmount: sendAmount,
     },

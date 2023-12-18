@@ -10,6 +10,7 @@ template ConfidentialTransactionSender() {
 	hash(w.senderStartingBalance - w.sendAmount + w.senderSalt) == x.senderEndingBalanceHash  // Is the sender correctly stating their ending balance?
     */
     signal input senderSalt;
+    signal input ephemeralSalt;
     signal input senderStartingBalance;
     signal input sendAmount;
 
@@ -20,9 +21,10 @@ template ConfidentialTransactionSender() {
     signal output sendAmountHash;
 
     assert(senderStartingBalance >= sendAmount);
+    assert(sendAmount >= 0);
 
     component poseidon1 = Poseidon(1);
-    poseidon1.inputs[0] <== sendAmount + senderSalt;
+    poseidon1.inputs[0] <== sendAmount + ephemeralSalt;
     sendAmountHash <== poseidon1.out;
 
     component poseidon2 = Poseidon(1);
